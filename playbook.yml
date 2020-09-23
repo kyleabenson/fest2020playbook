@@ -1,0 +1,31 @@
+---
+- name: Deploy GCP instanace
+  hosts: localhost
+  collections:
+    - kyleabenson.fest2020collection
+  tasks:
+    - import_role:
+        name: gcp_deploy
+      vars:  
+        admin_user: kyleabenson
+        #ssh_pub_key can be optionally set. If not used the play will generate a temporary ssh key to pass to next play when run locally
+        ssh_pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq77xtDlMuEPZUqlHdF+KpsPTSvycyhfXyJnMEIsVmxvANq6ENyE7RMpN819Zpx7vg2gRpjIPGGjx/jYW85SrTJB90a/AESQoa9mKPPSNbt6ElGNKsrQaZkcG/S0OFtwkl6n7SyMzHHOXxc3AEgy9NNjraWLBhqZ5JBc1pid/py33y3eYJnPzthOr2CpMQAWTxnbZSQ9nigJ3B3SN4xM50ZVa3bBNMDzSZqfrnWAfAYtLxLpauoO6OjH3RO+lbYhoCw0Gp3gde8DLV/c+TLDZAHJDmJLzHFBarEaTyRXVy8GALzvzesvJ++0JrqAEqc/RPeLeM4PhKEK4YBY6VlAv7Fn9Egg5xlP/EN9aK8wsQobVW6U7Izx2wNiejX4OpV2YIHtNTho0VdeEQ1RxYPSEYjURutx/6WCOqSqa/WHsYF8traqBZhEpgF0iVKf4uRzl39OyBtZsrFH1rbg4jmjPFqrU4pRRwcBHISwhMKPTVtNVMiLl1jxMWsJ0gF0qAxl0= kyleabenson"
+        gcp_project: fest2020-289112
+        # gcp_cred_kind: SET IF GCP_AUTH_KIND ENV VAR UNSET
+        # gcp_cred_file: SET IF GCP_SERVICE_ACCOUNT_FILE ENV VAR UNSET
+        gcp_region: us-east1
+        gcp_zone: "{{ gcp_region }}-b"
+      tags:
+        - deploy
+
+- name: Config deployed system
+  hosts: webservers
+  collections:
+    - kyleabenson.fest2020collection
+  tasks:
+    - import_role:
+        name: host_config
+      vars:
+        admin_user: kyleabenson
+      tags: 
+        - config
