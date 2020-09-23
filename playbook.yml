@@ -1,6 +1,7 @@
 ---
 - name: Deploy GCP instanace
   hosts: localhost
+  gather_facts: no
   collections:
     - kyleabenson.fest2020collection
   tasks:
@@ -19,7 +20,7 @@
         - deploy
 
 - name: Config deployed system
-  hosts: webservers
+  hosts: all
   collections:
     - kyleabenson.fest2020collection
   tasks:
