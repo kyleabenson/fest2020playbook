@@ -1,4 +1,5 @@
 ---
 collections:
 # With just the collection name
+- google.cloud
 - kyleabenson.fest2020collection
