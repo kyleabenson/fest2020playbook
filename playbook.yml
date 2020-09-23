@@ -17,10 +17,11 @@
         gcp_region: us-east1
         gcp_zone: "{{ gcp_region }}-b"
       tags:
-        - deploy
+      - deploy
 
 - name: Config deployed system
   hosts: all
+  gather_facts: no
   collections:
     - kyleabenson.fest2020collection
   tasks:
@@ -29,4 +30,4 @@
       vars:
         admin_user: kyleabenson
       tags: 
-        - config
+      - config
