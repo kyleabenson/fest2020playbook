@@ -5,24 +5,6 @@
   collections:
     - kyleabenson.fest2020collection
   tasks:
-    # - name: Get book info
-    #   debug:
-    #     msg: "URL is: {{ item.value.url }} File is {{ item.value.file}}"
-    #   loop: "{{ lookup('dict', book) }}"
-    #   when: "'title' not in item.key"
-    #   vars:
-    #     book_title: "Be Kind To One Another"
-    #     book:
-    #         text:
-    #             url: "http://gutenberg.org/cache/epub/63261/pg63261.txt"
-    #             file: "/home/{{admin_user}}/fest2020frontEnd/post/{{ book_title |replace(' ','_')| lower()}}.md"
-    #         image:
-    #             url: "https://www.gutenberg.org/cache/epub/63261/pg63261.cover.medium.jpg"
-    #             file: "/home/{{admin_user}}/fest2020frontEnd/static/images/{{ book_title |replace(' ','_')| lower()}}.jpg"
-
-    #   tags:
-    #     - test
-
     - import_role:
         name: gcp_deploy
       vars:  
@@ -34,12 +16,13 @@
         # gcp_cred_file: SET IF GCP_SERVICE_ACCOUNT_FILE ENV VAR UNSET
         gcp_region: us-east1
         gcp_zone: "{{ gcp_region }}-b"
+        desired_state: present
       tags:
       - deploy
 
+
 - name: Config deployed system
   hosts: all
-  gather_facts: no
   collections:
     - kyleabenson.fest2020collection
   tasks:
@@ -55,6 +38,8 @@
             image:
                 url: "https://www.gutenberg.org/cache/epub/63261/pg63261.cover.medium.jpg"
                 file: "/home/{{admin_user}}/fest2020frontEnd/static/images/{{ book_title |replace(' ','_')| lower()}}.jpg"
-  
-      tags: 
-      - config
+ 
+  tags: 
+    - config
+
+
